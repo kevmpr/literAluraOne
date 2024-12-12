@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
-@Table(name = "series")
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,9 +14,10 @@ public class Book {
     @Column(unique = true)
     private String title;
     private String author;
-    private String language;
+    private List<String> language;
     private Long downloadCount;
     @ManyToOne
+    private Author authorBook;
 
     public Book(){}
 
@@ -51,11 +52,11 @@ public class Book {
         this.author = author;
     }
 
-    public String getLanguage() {
+    public List<String> getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(List<String> language) {
         this.language = language;
     }
 
@@ -65,5 +66,15 @@ public class Book {
 
     public void setDownloadCount(Long downloadCount) {
         this.downloadCount = downloadCount;
+    }
+
+    @Override
+    public String toString() {
+        return """
+               Title: %s
+               Author: %s
+               Language: %s
+               Download Count: %d
+               """.formatted(this.title, this.author, this.language, this.downloadCount);
     }
 }

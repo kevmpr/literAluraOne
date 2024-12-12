@@ -3,9 +3,7 @@ package com.alura.literalura.model;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.OptionalInt;
-import java.util.OptionalLong;
 
 @Entity
 @Table(name = "authors")
@@ -17,7 +15,8 @@ public class Author {
     private String name;
     private Integer birthYear;
     private Integer deathYear;
-    //@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Book> books;
 
     public Author(){}
 
@@ -57,5 +56,14 @@ public class Author {
 
     public void setDeathYear(Integer deathYear) {
         this.deathYear = deathYear;
+    }
+
+    @Override
+    public String toString() {
+        return """
+               Name: %s
+               Birth Year: %d
+               Death Year: %d
+               """.formatted(this.name, this.birthYear, this.deathYear);
     }
 }
