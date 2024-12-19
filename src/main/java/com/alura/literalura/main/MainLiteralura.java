@@ -104,11 +104,11 @@ public class MainLiteralura {
                         break;
                 }
             } catch(Error e){
-                System.out.println("""
+                throw new Error("""
                     -------------------------------------------------------
                                   Invalid option, try again.
                     -------------------------------------------------------
-                    """);
+                    """ + e.getMessage());
             }
         }
     }
@@ -175,13 +175,12 @@ public class MainLiteralura {
 
             repositoryBook.save(book);
         } catch(Error e){
-            System.out.println("""
+            throw new Error("""
                     -------------------------------------------------------
                                   Book not found, try again.
                     -------------------------------------------------------
-                    """);
+                    """ + e.getMessage());
         }
-
     }
 
     private void showRegisteredBooks() {
@@ -237,11 +236,12 @@ public class MainLiteralura {
                 System.out.println("-------------------------------------------------------");
             }
         } catch (Error e){
-            System.out.println("""
+            throw new Error("""
+                    No language found: 
                     -------------------------------------------------------
                                   Invalid language, try again.
                     -------------------------------------------------------
-                    """);
+                    """ + e.getMessage());
         }
     }
 
@@ -273,13 +273,12 @@ public class MainLiteralura {
                 System.out.println("-------------------------------------------------------");
             }
         } catch (Error e){
-            System.out.println("""
+            throw new Error("""
                     -------------------------------------------------------
                                   Invalid author, try again.
                     -------------------------------------------------------
-                    """);
+                    """ + e.getMessage());
         }
-
     }
 
     private void showRegisteredAuthors() {
@@ -337,13 +336,12 @@ public class MainLiteralura {
                 }
             }
         } catch (Error e) {
-            System.out.println("""
+            throw new Error("""
                     -------------------------------------------------------
                                   Invalid year, try again.
                     -------------------------------------------------------
-                    """);
+                    """ + e.getMessage());
         }
-
     }
 
     private void showTop10Books(){
