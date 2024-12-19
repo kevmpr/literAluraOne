@@ -22,8 +22,17 @@ public class Author {
 
     public Author(DataAuthor dataAuthor){
         this.name = dataAuthor.name();
-        this.birthYear = OptionalInt.of(Integer.valueOf(dataAuthor.birthYear())).orElse(0);
-        this.deathYear = OptionalInt.of(Integer.valueOf(dataAuthor.deathYear())).orElse(0);
+        this.birthYear = dataAuthor.birthYear();
+        this.deathYear = dataAuthor.deathYear();
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        books.forEach(b -> b.setAuthor(this));
+        this.books = books;
     }
 
     public Long getId() {
@@ -64,6 +73,9 @@ public class Author {
                Name: %s
                Birth Year: %d
                Death Year: %d
-               """.formatted(this.name, this.birthYear, this.deathYear);
+               """.formatted(
+                        this.name,
+                        this.birthYear != null ? birthYear : "Unknown",
+                        this.deathYear != null ? deathYear : "Unknown");
     }
 }

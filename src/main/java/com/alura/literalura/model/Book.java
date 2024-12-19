@@ -3,7 +3,7 @@ package com.alura.literalura.model;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "books")
@@ -13,18 +13,27 @@ public class Book {
     private Long id;
     @Column(unique = true)
     private String title;
-    private String author;
-    private List<String> language;
+    @Enumerated(EnumType.STRING)
+    private Language language;
     private Long downloadCount;
     @ManyToOne
-    private Author authorBook;
+    private Author author;
 
     public Book(){}
 
     public Book(DataBook dataBook){
         this.title = dataBook.title();
-        this.author = String.valueOf(dataBook.authors().get(0).name());
-        this.language = dataBook.language();
+
+        List<DataAuthor> dataAuthors = dataBook.authors().stream().limit(1).collect(Collectors.toList());
+        if(!dataAuthors.isEmpty()){
+            DataAuthor dataAuthor = dataAuthors.get(0);
+            this.author = new Author(dataAuthor);
+        }
+
+        if(dataBook.languages() != null && !dataBook.languages().isEmpty()){
+            this.language = Language.fromGutendex(dataBook.languages().get(0));
+        }
+
         this.downloadCount = dataBook.downloadCount();
     }
 
@@ -44,19 +53,9 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
+    public Language getLanguage() {return language;}
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public List<String> getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(List<String> language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 
@@ -68,6 +67,14 @@ public class Book {
         this.downloadCount = downloadCount;
     }
 
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return """
@@ -75,6 +82,10 @@ public class Book {
                Author: %s
                Language: %s
                Download Count: %d
-               """.formatted(this.title, this.author, this.language, this.downloadCount);
+               """.formatted(
+                        this.title,
+                        this.author.getName(),
+                        this.language.getLanguageEnglish().toString(),
+                        this.downloadCount);
     }
 }
